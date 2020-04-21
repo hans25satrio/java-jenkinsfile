@@ -15,13 +15,13 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@52.79.206.115 rm -rf /home/ubuntu/app'
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@52.79.206.115 mkdir -p /home/ubuntu/app'
-                sh 'scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -r target/java-jenkinsfile.tar ubuntu@52.79.206.115:/home/ubuntu/app'
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@52.79.206.115 docker container rm -f java-jenkinsfile'
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@52.79.206.115 docker rmi java-jenkinsfile:development -f || true'
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@52.79.206.115 docker load --input /home/ubuntu/app/java-jenkinsfile.tar'
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@52.79.206.115 docker run -ti -d --name java-jenkinsfile -p 8080:8080 java-jenkinsfile:development'
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@${your_application_server_ip} rm -rf /home/ubuntu/app'
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@${your_application_server_ip} mkdir -p /home/ubuntu/app'
+                sh 'scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -r target/java-jenkinsfile.tar ubuntu@${your_application_server_ip}:/home/ubuntu/app'
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@${your_application_server_ip} docker container rm -f java-jenkinsfile'
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@${your_application_server_ip} docker rmi java-jenkinsfile:development -f || true'
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@${your_application_server_ip} docker load --input /home/ubuntu/app/java-jenkinsfile.tar'
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@${your_application_server_ip} docker run -ti -d --name java-jenkinsfile -p 8080:8080 java-jenkinsfile:development'
             }
         }
     }
